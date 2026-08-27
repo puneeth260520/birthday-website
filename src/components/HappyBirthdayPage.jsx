@@ -13,7 +13,7 @@ import ShihTzuIllustration from './ShihTzuIllustration';
 import defaultPhoto from '../assets/shih_tzu_puppy_cake_new.jpeg';
 import leftSideImg from '../assets/left_side_photo_navy.png';
 import topLeftImg from '../assets/top_left_photo_blended.png';
-import topRightImg from '../assets/image.png';
+import topRightImg from '../assets/vtv.png';
 
 const BALLOON_COLORS = [
   '#FF4B72', // Hot Pink
