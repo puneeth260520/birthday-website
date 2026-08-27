@@ -10,7 +10,7 @@ import './HappyBirthdayPage.css';
 import ShihTzuIllustration from './ShihTzuIllustration';
 
 // Note: Replace this placeholder path with your real photo path when ready
-import defaultPhoto from '../assets/shih_tzu_puppy_cake.jpg';
+import defaultPhoto from '../assets/shih_tzu_puppy_cake_new.jpeg';
 import leftSideImg from '../assets/left_side_photo_navy.png';
 import topLeftImg from '../assets/top_left_photo_blended.png';
 import topRightImg from '../assets/image.png';
