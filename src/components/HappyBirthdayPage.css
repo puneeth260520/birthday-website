@@ -59,7 +59,7 @@
 .hbp-top-right-floating {
   position: absolute;
   right: 40px;
-  top: 65px;
+  top: 20px;
   width: 300px;
   height: 380px;
   z-index: 5;
