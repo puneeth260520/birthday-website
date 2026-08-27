@@ -1,0 +1,417 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@700;900&family=Dancing+Script:wght@700&family=Great+Vibes&family=Outfit:wght@600;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================
+   Important Note Page (Page 3) — Premium Romantic Split Layout
+   ============================================================ */
+
+.inp-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFF0F5 40%, #FBE4EC 100%);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Ambient Floating Hearts Container */
+.inp-ambient-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.inp-floating-heart {
+  position: absolute;
+  bottom: -40px;
+  opacity: 0;
+  animation: floatUpHeart 8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba(233, 30, 99, 0.25));
+}
+
+@keyframes floatUpHeart {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-50vh) rotate(15deg) scale(1.1);
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-105vh) rotate(-15deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* User Tap / Click Burst Heart */
+.inp-burst-heart {
+  position: absolute;
+  pointer-events: none;
+  z-index: 99;
+  transform: translate(-50%, -50%);
+  animation: burstHeartUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  filter: drop-shadow(0 4px 10px rgba(233, 30, 99, 0.4));
+}
+
+@keyframes burstHeartUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -100px) scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -180px) scale(1);
+  }
+}
+
+/* Floating Back Button styling for Page 3 */
+.inp-back-btn {
+  position: absolute;
+  top: 18px;
+  left: 25px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid rgba(233, 30, 99, 0.25);
+  color: #880e4f;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.12);
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: auto;
+}
+
+.inp-back-btn:hover {
+  background: #880e4f;
+  color: #ffffff;
+  border-color: #880e4f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(136, 14, 79, 0.3);
+}
+
+/* Main Split Container */
+.inp-split-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Left Image Region: Covers left 50% */
+.inp-left-image-region {
+  width: 50%;
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 240, 245, 0.4);
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-right: 1px solid rgba(233, 30, 99, 0.1);
+}
+
+.inp-image-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 92%;
+  max-height: 85vh;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(136, 14, 79, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease;
+}
+
+.inp-image-frame:hover {
+  transform: scale(1.02);
+}
+
+.inp-cover-image {
+  max-width: 100%;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 20px;
+  display: block;
+}
+
+.inp-image-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Right Content Region: Right 50% of page */
+.inp-right-content-region {
+  width: 50%;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Letter Card Wrapper */
+.inp-card-wrapper {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: center;
+}
+
+.inp-letter-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 182, 193, 0.6);
+  border-radius: 28px;
+  padding: 2.2rem 2rem 1.8rem 2rem;
+  box-shadow: 0 20px 50px rgba(233, 30, 99, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(25px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Top Stamp Badge */
+.inp-letter-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #fff0f5, #ffe4e8);
+  border: 1px solid rgba(233, 30, 99, 0.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+.inp-stamp-icon {
+  font-size: 0.9rem;
+}
+
+.inp-stamp-tag {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #c2185b;
+}
+
+/* Heading Styling */
+.inp-letter-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+  margin: 0 0 0.8rem 0;
+}
+
+.inp-script-sub {
+  font-family: 'Alex Brush', 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  color: #ad1457;
+  font-weight: 400;
+}
+
+.inp-title-main {
+  font-family: 'Cinzel Decorative', 'Playfair Display', serif;
+  font-size: 1.85rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #880e4f 0%, #d81b60 50%, #e91e63 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.inp-divider {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff4081, transparent);
+  margin: 0.2rem 0 1.2rem 0;
+  border-radius: 2px;
+}
+
+/* Letter Body Wording */
+.inp-letter-body {
+  width: 100%;
+  margin-bottom: 1.4rem;
+}
+
+.inp-letter-salutation {
+  font-family: 'Dancing Script', 'Great Vibes', cursive;
+  font-size: 1.8rem;
+  color: #c2185b;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.inp-letter-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #4a148c;
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+/* Secret Message Reveal Container */
+.inp-secret-message {
+  background: linear-gradient(135deg, #fff0f5, #fce4ec);
+  border: 1.5px dashed rgba(233, 30, 99, 0.4);
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  margin-top: 0.8rem;
+  position: relative;
+  animation: popReveal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.inp-secret-message p {
+  font-family: 'Dancing Script', 'Poppins', cursive, sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.45;
+  color: #880e4f;
+  font-weight: 700;
+  margin: 0;
+}
+
+.inp-sparkle-star {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  font-size: 1.2rem;
+}
+
+@keyframes popReveal {
+  0% { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Action Controls & Interactive Button */
+.inp-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.inp-interactive-btn {
+  background: linear-gradient(135deg, #ff4081 0%, #e91e63 50%, #c2185b 100%);
+  border: none;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 11px 28px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(233, 30, 99, 0.35);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  letter-spacing: 0.3px;
+}
+
+.inp-interactive-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 28px rgba(233, 30, 99, 0.5);
+  background: linear-gradient(135deg, #ff80ab 0%, #ff4081 50%, #e91e63 100%);
+}
+
+.inp-interactive-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.inp-love-counter {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  color: #ad1457;
+  background: rgba(233, 30, 99, 0.08);
+  padding: 4px 14px;
+  border-radius: 15px;
+  animation: counterPulse 0.3s ease;
+}
+
+.inp-love-counter strong {
+  color: #c2185b;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+@keyframes counterPulse {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .inp-split-container {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .inp-left-image-region {
+    width: 100%;
+    min-height: 45vh;
+    border-right: none;
+    border-bottom: 1px solid rgba(233, 30, 99, 0.1);
+  }
+  .inp-right-content-region {
+    width: 100%;
+    min-height: 55vh;
+    padding: 1.5rem 1rem;
+  }
+  .inp-letter-card {
+    padding: 1.5rem 1.2rem;
+  }
+}

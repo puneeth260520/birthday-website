@@ -1,0 +1,514 @@
+/* ============================================================
+   BirthdayCandlePage.css  — v2 "Royal Midnight Princess"
+   Deep royal purple + midnight blue theme, hot pink headings,
+   realistic Shih Tzu + Cinderella-style princess illustration.
+   ============================================================ */
+
+/* --- Google Font import ------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Playfair+Display:wght@700;900&family=Comfortaa:wght@400;700&display=swap');
+
+/* --- Design tokens ---------------------------------------- */
+:root {
+  --royal-purple:    #0a0712;
+  --midnight:        #120c1f;
+  --deep-violet:     #1a102b;
+  --hot-pink:        #e91e8c;
+  --hot-pink-bright: #ff2da0;
+  --gold:            #f0c040;
+  --gold-light:      #ffe082;
+  --sky-blue:        #87ceeb;
+  --ice-blue:        #b8e4ff;
+  --cream:           #fff7ed;
+  --white:           #ffffff;
+  --star-gold:       #ffd700;
+}
+
+/* ============================================================
+   Page wrapper
+   ============================================================ */
+.bcp-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Baloo 2', 'Comfortaa', cursive;
+
+  /* Luxurious Midnight Obsidian / Deep Charcoal-Purple Gradient */
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    #181024 0%,
+    #0e0917 50%,
+    #050308 100%
+  );
+}
+
+/* Starfield vignette overlay */
+.bcp-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 0;
+}
+
+/* ============================================================
+   Star field background (CSS-only)
+   ============================================================ */
+.bcp-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.bcp-star {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+  width: var(--sz, 2px);
+  height: var(--sz, 2px);
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  opacity: 0;
+  animation: twinkle var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0;    transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.5); }
+}
+
+/* ============================================================
+   Floating background particles (hearts, stars, emojis)
+   ============================================================ */
+.bcp-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.bcp-particle {
+  position: absolute;
+  opacity: 0;
+  animation: floatUp var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+  font-size: var(--size, 14px);
+  left: var(--x, 50%);
+  bottom: -20px;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.7));
+}
+
+@keyframes floatUp {
+  0%   { opacity: 0;    transform: translateY(0)       rotate(0deg); }
+  15%  { opacity: 0.9; }
+  80%  { opacity: 0.6; }
+  100% { opacity: 0;    transform: translateY(-110vh)  rotate(360deg); }
+}
+
+/* ============================================================
+   Gold fairy-dust dots
+   ============================================================ */
+.bcp-fairy-dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.bcp-dust {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: dustDrift var(--dur, 7s) ease-in-out var(--delay, 0s) infinite;
+  left: var(--x, 30%);
+  bottom: 0;
+  box-shadow: 0 0 6px 2px rgba(240, 192, 64, 0.7);
+}
+
+@keyframes dustDrift {
+  0%   { opacity: 0;   transform: translateY(0)      translateX(0); }
+  20%  { opacity: 1; }
+  60%  { opacity: 0.6; transform: translateY(-55vh)  translateX(12px); }
+  100% { opacity: 0;   transform: translateY(-100vh) translateX(-8px); }
+}
+
+/* ============================================================
+   Decorative princess elements (corners)
+   ============================================================ */
+.bcp-deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+}
+.bcp-deco--tiara  { top: 16px;  right: 20px;  animation: gentleBob 3.5s ease-in-out infinite; }
+.bcp-deco--castle { top: 12px;  left: 16px;   animation: gentleBob 5s ease-in-out 0.5s infinite; }
+.bcp-deco--wand   { bottom: 10%; left: 14px;  animation: gentleBob 4.2s ease-in-out 1s infinite; }
+.bcp-deco--star-r { bottom: 15%; right: 18px; animation: gentleBob 3.8s ease-in-out 0.3s infinite; }
+
+@keyframes gentleBob {
+  0%, 100% { transform: translateY(0)    rotate(-4deg); }
+  50%       { transform: translateY(-9px) rotate(4deg); }
+}
+
+/* Wand sparkle trail */
+.bcp-wand-sparkles { position: relative; display: inline-block; }
+.bcp-wand-sparkles span {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: sparkleTrail 1.6s ease-out infinite;
+}
+.bcp-wand-sparkles span:nth-child(1) { top: -4px;  left: 12px; animation-delay: 0s;   }
+.bcp-wand-sparkles span:nth-child(2) { top:-10px;  left: 22px; animation-delay: 0.3s; }
+.bcp-wand-sparkles span:nth-child(3) { top: -7px;  left: 32px; animation-delay: 0.6s; }
+.bcp-wand-sparkles span:nth-child(4) { top:-14px;  left: 18px; animation-delay: 0.9s; }
+
+@keyframes sparkleTrail {
+  0%   { opacity: 0; transform: scale(0.4) translateY(0); }
+  30%  { opacity: 1; transform: scale(1)   translateY(-6px); }
+  100% { opacity: 0; transform: scale(0.2) translateY(-20px); }
+}
+
+/* ============================================================
+   Main content card
+   ============================================================ */
+.bcp-card {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  max-width: 460px;
+  width: 92%;
+  text-align: center;
+}
+
+/* ============================================================
+   Heading — solid hot pink
+   ============================================================ */
+.bcp-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 5.5vw, 2.4rem);
+  font-weight: 900;
+  color: var(--hot-pink);
+  text-shadow:
+    0 0 20px rgba(233, 30, 140, 0.6),
+    0 0 40px rgba(233, 30, 140, 0.3),
+    2px 2px 0px rgba(0,0,0,0.4);
+  margin: 0 0 4px;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+}
+
+.bcp-subheading {
+  font-family: 'Comfortaa', cursive;
+  font-size: clamp(0.82rem, 2.5vw, 0.98rem);
+  color: var(--gold-light);
+  margin: 0 0 10px;
+  letter-spacing: 0.8px;
+  text-shadow: 0 0 12px rgba(240, 192, 64, 0.5);
+}
+
+/* ============================================================
+   Scene container (dog + princess side by side)
+   ============================================================ */
+.bcp-scene {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  margin: 4px 0 8px;
+}
+
+/* ============================================================
+   Shih Tzu Dog Image wrapper (seamless transparent)
+   ============================================================ */
+.bcp-dog-wrapper {
+  position: relative;
+  width: 195px;
+  height: 195px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+}
+
+.bcp-dog-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.bcp-shih-tzu-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ============================================================
+   Floating Princess Jasmine (Top Left corner)
+   ============================================================ */
+.bcp-floating-princess {
+  position: absolute;
+  top: 50px;
+  left: 60px;
+  width: 260px;
+  height: 320px;
+  z-index: 10;
+  pointer-events: auto;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
+}
+
+.bcp-floating-princess-right {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+  width: 260px;
+  height: 320px;
+  z-index: 10;
+  pointer-events: auto;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
+}
+
+.bcp-floating-princess-center {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  width: 260px;
+  height: 280px;
+  z-index: 10;
+  pointer-events: auto;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
+}
+
+.bcp-floating-princess-center:hover {
+  transform: translateX(-50%) translateY(-140px) scale(0.95);
+}
+
+.bcp-floating-princess:hover,
+.bcp-floating-princess-right:hover {
+  transform: scale(1.05);
+}
+
+.bcp-princess-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ============================================================
+   Candle flame animation
+   ============================================================ */
+.bcp-flame {
+  animation: flicker 0.7s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+  transition: opacity 0.5s ease;
+}
+
+@keyframes flicker {
+  0%   { transform: scaleX(1)    scaleY(1)    translateY(0);    filter: drop-shadow(0 0 5px #ffd700) drop-shadow(0 0 12px #ff8800); }
+  20%  { transform: scaleX(0.82) scaleY(1.15) translateY(-1.5px); filter: drop-shadow(0 0 8px #ffaa00) drop-shadow(0 0 18px #ff5500); }
+  50%  { transform: scaleX(1.12) scaleY(0.92) translateY(0.5px);  filter: drop-shadow(0 0 4px #ffd700) drop-shadow(0 0 10px #ff9900); }
+  75%  { transform: scaleX(0.88) scaleY(1.1)  translateY(-1px);  filter: drop-shadow(0 0 10px #ffcc00); }
+  100% { transform: scaleX(1.06) scaleY(1.04) translateY(0);    filter: drop-shadow(0 0 6px #ffaa00) drop-shadow(0 0 14px #ff7700); }
+}
+
+.bcp-flame--blown {
+  animation: blowOut 0.6s ease forwards;
+}
+
+@keyframes blowOut {
+  0%   { opacity: 1; transform: scaleY(1)   scaleX(1)   translateX(0); }
+  40%  { opacity: 0.7; transform: scaleY(1.5) scaleX(0.4) translateX(10px); }
+  100% { opacity: 0; transform: scaleY(0.1) scaleX(0.2) translateX(14px); }
+}
+
+/* ============================================================
+   Smoke wisps
+   ============================================================ */
+.bcp-smoke-container {
+  position: absolute;
+  pointer-events: none;
+}
+
+.bcp-smoke {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(210, 210, 230, 0.5);
+  opacity: 0;
+  animation: smokeRise 1.2s ease-out forwards;
+}
+.bcp-smoke:nth-child(1) { left: 0;    animation-delay: 0s;   }
+.bcp-smoke:nth-child(2) { left: -5px; animation-delay: 0.15s; width:9px; height:9px; }
+.bcp-smoke:nth-child(3) { left: 4px;  animation-delay: 0.3s;  width:7px; height:7px; }
+
+@keyframes smokeRise {
+  0%   { opacity: 0;   transform: translateY(0)    scale(0.5); }
+  20%  { opacity: 0.6; transform: translateY(-8px)  scale(1); }
+  70%  { opacity: 0.3; transform: translateY(-28px) scale(1.7) translateX(4px); }
+  100% { opacity: 0;   transform: translateY(-46px) scale(2.4) translateX(-4px); }
+}
+
+/* ============================================================
+   Button
+   ============================================================ */
+.bcp-btn {
+  margin-top: 10px;
+  padding: 15px 36px;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  background: #e91e8c;
+  box-shadow:
+    0 4px 24px rgba(233, 30, 140, 0.5),
+    0 0 0 0 rgba(233, 30, 140, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.3s;
+  animation: pulsGlow 2.4s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+@keyframes pulsGlow {
+  0%, 100% {
+    box-shadow: 0 4px 24px rgba(233,30,140,0.45), 0 0 0 0 rgba(233,30,140,0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 6px 32px rgba(233,30,140,0.65), 0 0 0 12px rgba(233,30,140,0);
+    transform: scale(1.04);
+  }
+}
+
+.bcp-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 8px 40px rgba(233, 30, 140, 0.7);
+  animation-play-state: paused;
+}
+
+.bcp-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  animation: none;
+}
+
+/* ============================================================
+   Confetti burst
+   ============================================================ */
+.bcp-confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.bcp-confetti-piece {
+  position: absolute;
+  width: var(--w, 10px);
+  height: var(--h, 10px);
+  background: var(--col, #e91e8c);
+  border-radius: var(--br, 2px);
+  top: 45%;
+  left: 50%;
+  opacity: 1;
+  animation: confettiBurst var(--dur, 1.6s) ease-out var(--delay, 0s) forwards;
+}
+
+@keyframes confettiBurst {
+  0%   { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+  60%  { opacity: 0.9; }
+  100% {
+    opacity: 0;
+    transform:
+      translate(var(--tx, 80px), var(--ty, -120px))
+      rotate(var(--rot, 360deg))
+      scale(0.5);
+  }
+}
+
+/* ============================================================
+   Wish overlay
+   ============================================================ */
+.bcp-wish-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.bcp-wish-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 900;
+  color: var(--hot-pink);
+  text-shadow:
+    0 0 30px rgba(233, 30, 140, 0.8),
+    0 0 60px rgba(233, 30, 140, 0.4),
+    0 4px 8px rgba(0,0,0,0.5);
+  text-align: center;
+  padding: 0 20px;
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.bcp-wish-msg--visible  { opacity: 1; transform: scale(1); }
+.bcp-wish-msg--fade-out { opacity: 0; transform: scale(1.08); }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 480px) {
+  .bcp-card { padding: 24px 16px 20px; }
+  .bcp-scene { gap: 4px; }
+  .bcp-dog-scene     { width: 170px; height: 240px; }
+  .bcp-princess-scene { width: 120px; height: 220px; }
+}
+
+@media (min-width: 768px) {
+  .bcp-card { max-width: 520px; }
+  .bcp-dog-scene     { width: 220px; height: 300px; }
+  .bcp-princess-scene { width: 160px; height: 280px; }
+}

@@ -1,0 +1,53 @@
+/* App-level reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #0b1026;
+}
+
+/* Page Cross-Fade Transition Wrapper */
+.page-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+  overflow-y: auto;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.page-wrapper.active {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  pointer-events: auto;
+}
+
+.page-wrapper.inactive {
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-wrapper.white-page {
+  background-color: #ffffff;
+  overflow: hidden;
+}
