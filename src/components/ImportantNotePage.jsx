@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './ImportantNotePage.css';
 
 const FLOATING_HEARTS = ['💖', '💕', '💗', '💓', '✨', '🌸', '💖', '✨'];
 
-export default function ImportantNotePage({ imageSrc, onBack, isActive = true, children }) {
+export default function ImportantNotePage({
+  imageSrc,
+  audioSrc = '/audio.mp3',
+  onBack,
+  isActive = true,
+  children
+}) {
   const [clickHearts, setClickHearts] = useState([]);
   const [loveCount, setLoveCount] = useState(0);
-  const [isOpened, setIsOpened] = useState(false);
+
+  // Audio state
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef(null);
 
   // Spawn hearts on user click/tap
   const handleContainerClick = (e) => {
-    if (e.target.closest('.inp-back-btn') || e.target.closest('.inp-interactive-btn')) return;
+    if (e.target.closest('.inp-back-btn') || e.target.closest('.inp-audio-player-card')) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -46,24 +58,87 @@ export default function ImportantNotePage({ imageSrc, onBack, isActive = true, c
     }
   };
 
-  const handleSurpriseClick = (e) => {
+  const playFallbackMelody = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 392.00];
+      notes.forEach((freq, index) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.1, ctx.currentTime + index * 0.18);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + index * 0.18 + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + index * 0.18);
+        osc.stop(ctx.currentTime + index * 0.18 + 0.35);
+      });
+    } catch {
+      // ignore
+    }
+  };
+
+  const togglePlay = (e) => {
+    if (e) e.stopPropagation();
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // Play fallback melody if file is not found yet
+          playFallbackMelody();
+          setIsPlaying(true);
+        });
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleEnded = () => {
+    setIsPlaying(false);
+    setCurrentTime(0);
+  };
+
+  const handleSeek = (e) => {
     e.stopPropagation();
-    setIsOpened(true);
-    setLoveCount((c) => c + 10);
+    const newTime = parseFloat(e.target.value);
+    setCurrentTime(newTime);
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+    }
+  };
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
 
-    const burst = Array.from({ length: 12 }, (_, i) => ({
-      id: Date.now() + i,
-      x: x + (Math.random() - 0.5) * 160,
-      y: y + (Math.random() - 0.5) * 100,
-      emoji: FLOATING_HEARTS[i % FLOATING_HEARTS.length],
-      size: Math.random() * 14 + 20,
-    }));
-
-    setClickHearts((prev) => [...prev.slice(-25), ...burst]);
+  const formatTime = (seconds) => {
+    if (isNaN(seconds) || !seconds) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
   return (
@@ -151,32 +226,71 @@ export default function ImportantNotePage({ imageSrc, onBack, isActive = true, c
                   <p className="inp-letter-text">
                     Thank you for all the beautiful moments, endless smiles, and unforgettable memories. You bring so much joy into every day! 🌸
                   </p>
-
-                  {isOpened && (
-                    <div className="inp-secret-message">
-                      <span className="inp-sparkle-star">✨</span>
-                      <p>
-                        "May your year ahead be filled with infinite happiness, dreams come true, and endless sweet adventures!" 🎂🥳
-                      </p>
-                    </div>
-                  )}
                 </div>
 
-                {/* Interactive Action Controls */}
-                <div className="inp-card-actions">
-                  <button
-                    className="inp-interactive-btn"
-                    onClick={handleSurpriseClick}
-                  >
-                    {isOpened ? 'Sending More Love! 💖' : 'Tap for Special Wish 🎁'}
-                  </button>
+                {/* Interactive Audio Player replacing "Tap for Special Wish" */}
+                <div className="inp-audio-player-card">
+                  <audio
+                    ref={audioRef}
+                    src={audioSrc}
+                    onTimeUpdate={handleTimeUpdate}
+                    onLoadedMetadata={handleLoadedMetadata}
+                    onEnded={handleEnded}
+                    preload="auto"
+                  />
 
-                  {loveCount > 0 && (
-                    <div className="inp-love-counter">
-                      Love Sent: <strong>{loveCount}</strong> 💖
+                  <div className="inp-audio-header">
+                    <span className="inp-audio-icon">🎵</span>
+                    <span className="inp-audio-title">Special Audio Wish</span>
+                    {isPlaying && (
+                      <div className="inp-equalizer">
+                        <span className="inp-eq-bar bar1" />
+                        <span className="inp-eq-bar bar2" />
+                        <span className="inp-eq-bar bar3" />
+                        <span className="inp-eq-bar bar4" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="inp-audio-controls">
+                    <button
+                      className={`inp-play-btn ${isPlaying ? 'playing' : ''}`}
+                      onClick={togglePlay}
+                      aria-label={isPlaying ? 'Pause Audio' : 'Play Audio'}
+                    >
+                      {isPlaying ? '⏸️' : '▶️'}
+                    </button>
+
+                    <div className="inp-audio-progress-group">
+                      <input
+                        type="range"
+                        className="inp-audio-slider"
+                        min="0"
+                        max={duration || 100}
+                        value={currentTime}
+                        onChange={handleSeek}
+                      />
+                      <div className="inp-audio-time">
+                        <span>{formatTime(currentTime)}</span>
+                        <span>{formatTime(duration)}</span>
+                      </div>
                     </div>
-                  )}
+
+                    <button
+                      className="inp-mute-btn"
+                      onClick={toggleMute}
+                      title={isMuted ? 'Unmute' : 'Mute'}
+                    >
+                      {isMuted ? '🔇' : '🔊'}
+                    </button>
+                  </div>
                 </div>
+
+                {loveCount > 0 && (
+                  <div className="inp-love-counter" style={{ marginTop: '10px' }}>
+                    Love Sent: <strong>{loveCount}</strong> 💖
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -185,3 +299,4 @@ export default function ImportantNotePage({ imageSrc, onBack, isActive = true, c
     </div>
   );
 }
+
