@@ -11,6 +11,7 @@ import BirthdayCandlePage from './components/BirthdayCandlePage';
 import HappyBirthdayPage from './components/HappyBirthdayPage';
 import ImportantNotePage from './components/ImportantNotePage';
 import myImage from './assets/my_image.png';
+import birthdaySong from './assets/birthday_song.mp3';
 import './App.css';
 
 function getInitialPage() {
@@ -73,6 +74,7 @@ export default function App() {
       <div className={`page-wrapper white-page ${currentPage === 3 ? 'active' : 'inactive'}`}>
         <ImportantNotePage 
           imageSrc={myImage}
+          audioSrc={birthdaySong}
           onBack={() => goToPage(2)}
           isActive={currentPage === 3}
         />

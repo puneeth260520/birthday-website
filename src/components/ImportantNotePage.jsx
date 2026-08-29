@@ -18,7 +18,33 @@ export default function ImportantNotePage({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [customAudioUrl, setCustomAudioUrl] = useState(null);
+  const [audioFileName, setAudioFileName] = useState('');
+  const [currentAudioSrc, setCurrentAudioSrc] = useState(audioSrc || '/audio.mp3');
   const audioRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setCustomAudioUrl(url);
+      setAudioFileName(file.name);
+      setIsPlaying(false);
+      setCurrentTime(0);
+
+      // Auto play selected file after state updates
+      setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+        }
+      }, 100);
+    }
+  };
+
+  const handleAudioError = () => {
+    // If default audio file doesn't exist, we can handle gracefully
+    setIsPlaying(false);
+  };
 
   // Spawn hearts on user click/tap
   const handleContainerClick = (e) => {
@@ -228,63 +254,77 @@ export default function ImportantNotePage({
                   </p>
                 </div>
 
-                {/* Interactive Audio Player replacing "Tap for Special Wish" */}
-                <div className="inp-audio-player-card">
-                  <audio
-                    ref={audioRef}
-                    src={audioSrc}
-                    onTimeUpdate={handleTimeUpdate}
-                    onLoadedMetadata={handleLoadedMetadata}
-                    onEnded={handleEnded}
-                    preload="auto"
-                  />
+                  {/* Interactive Audio Player */}
+                  <div className="inp-audio-player-card">
+                    <audio
+                      ref={audioRef}
+                      src={customAudioUrl || currentAudioSrc}
+                      onTimeUpdate={handleTimeUpdate}
+                      onLoadedMetadata={handleLoadedMetadata}
+                      onEnded={handleEnded}
+                      onError={handleAudioError}
+                      preload="auto"
+                    />
 
-                  <div className="inp-audio-header">
-                    <span className="inp-audio-icon">🎵</span>
-                    <span className="inp-audio-title">Special Audio Wish</span>
-                    {isPlaying && (
-                      <div className="inp-equalizer">
-                        <span className="inp-eq-bar bar1" />
-                        <span className="inp-eq-bar bar2" />
-                        <span className="inp-eq-bar bar3" />
-                        <span className="inp-eq-bar bar4" />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="inp-audio-controls">
-                    <button
-                      className={`inp-play-btn ${isPlaying ? 'playing' : ''}`}
-                      onClick={togglePlay}
-                      aria-label={isPlaying ? 'Pause Audio' : 'Play Audio'}
-                    >
-                      {isPlaying ? '⏸️' : '▶️'}
-                    </button>
-
-                    <div className="inp-audio-progress-group">
-                      <input
-                        type="range"
-                        className="inp-audio-slider"
-                        min="0"
-                        max={duration || 100}
-                        value={currentTime}
-                        onChange={handleSeek}
-                      />
-                      <div className="inp-audio-time">
-                        <span>{formatTime(currentTime)}</span>
-                        <span>{formatTime(duration)}</span>
-                      </div>
+                    <div className="inp-audio-header">
+                      <span className="inp-audio-icon">🎵</span>
+                      <span className="inp-audio-title">
+                        {audioFileName ? audioFileName : 'Special Audio Wish'}
+                      </span>
+                      {isPlaying && (
+                        <div className="inp-equalizer">
+                          <span className="inp-eq-bar bar1" />
+                          <span className="inp-eq-bar bar2" />
+                          <span className="inp-eq-bar bar3" />
+                          <span className="inp-eq-bar bar4" />
+                        </div>
+                      )}
+                      
+                      <label className="inp-upload-audio-btn" title="Choose your audio file from your device">
+                        <span className="inp-upload-icon">📁</span>
+                        <span className="inp-upload-text">Choose Audio</span>
+                        <input
+                          type="file"
+                          accept="audio/*"
+                          onChange={handleFileChange}
+                          style={{ display: 'none' }}
+                        />
+                      </label>
                     </div>
 
-                    <button
-                      className="inp-mute-btn"
-                      onClick={toggleMute}
-                      title={isMuted ? 'Unmute' : 'Mute'}
-                    >
-                      {isMuted ? '🔇' : '🔊'}
-                    </button>
+                    <div className="inp-audio-controls">
+                      <button
+                        className={`inp-play-btn ${isPlaying ? 'playing' : ''}`}
+                        onClick={togglePlay}
+                        aria-label={isPlaying ? 'Pause Audio' : 'Play Audio'}
+                      >
+                        {isPlaying ? '⏸️' : '▶️'}
+                      </button>
+
+                      <div className="inp-audio-progress-group">
+                        <input
+                          type="range"
+                          className="inp-audio-slider"
+                          min="0"
+                          max={duration || 100}
+                          value={currentTime}
+                          onChange={handleSeek}
+                        />
+                        <div className="inp-audio-time">
+                          <span>{formatTime(currentTime)}</span>
+                          <span>{formatTime(duration)}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        className="inp-mute-btn"
+                        onClick={toggleMute}
+                        title={isMuted ? 'Unmute' : 'Mute'}
+                      >
+                        {isMuted ? '🔇' : '🔊'}
+                      </button>
+                    </div>
                   </div>
-                </div>
 
                 {loveCount > 0 && (
                   <div className="inp-love-counter" style={{ marginTop: '10px' }}>
